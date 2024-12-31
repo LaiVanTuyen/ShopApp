@@ -24,7 +24,9 @@ public class ProductRedisService implements IProductRedisService {
     private final ObjectMapper redisObjectMapper;
 
     // Hàm này tạo ra khóa (key) từ các tham số đầu vào
-    private String getKeyFrom(String keyword, Long categoryId, PageRequest pageRequest) {
+    private String getKeyFrom(String keyword,
+                              Long categoryId,
+                              PageRequest pageRequest) {
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         Sort.Order order = pageRequest.getSort().getOrderFor("id");
@@ -45,7 +47,10 @@ public class ProductRedisService implements IProductRedisService {
 
     // Hàm này lấy tất cả sản phẩm từ cache Redis
     @Override
-    public List<ProductResponse> getAllProducts(String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
+    public List<ProductResponse> getAllProducts(String keyword,
+                                                Long categoryId,
+                                                PageRequest pageRequest) throws JsonProcessingException {
+
         String key = this.getKeyFrom(keyword, categoryId, pageRequest);
         String json = redisTemplate.opsForValue().get(key);
         // Nếu json không null, chuyển đổi json thành danh sách ProductResponse, ngược lại trả về null

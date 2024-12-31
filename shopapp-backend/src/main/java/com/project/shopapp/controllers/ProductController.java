@@ -48,6 +48,7 @@ public class ProductController {
 
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     //POST http://localhost:8088/v1/api/products
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -71,6 +72,7 @@ public class ProductController {
     @PostMapping(value = "uploads/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     //POST http://localhost:8088/v1/api/products
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> uploadImages(
             @PathVariable("id") Long productId,
             @ModelAttribute("files") List<MultipartFile> files
@@ -179,22 +181,27 @@ public class ProductController {
         logger.info(String.format("keyword = %s, category_id = %d, page = %d, limit = %d",
                 keyword, categoryId, page, limit));
 
-        List<ProductResponse> productResponses = productRedisService.getAllProducts(keyword, categoryId, pageRequest);
+        List<ProductResponse> productResponses = productRedisService
+                .getAllProducts(keyword, categoryId, pageRequest);
+        if (productResponses!=null && !productResponses.isEmpty()) {
+            totalPages = productResponses.get(0).getTotalPages();
+        }
         if (productResponses == null) {
             Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest);
             // Lấy tổng số trang
             totalPages = productPage.getTotalPages();
             productResponses = productPage.getContent();
+            // Bổ sung totalPages vào các đối tượng ProductResponse
+            for (ProductResponse product : productResponses) {
+                product.setTotalPages(totalPages);
+            }
             productRedisService.saveAllProductsToCache(
                     productResponses,
                     keyword,
                     categoryId,
                     pageRequest);
-        } else {
-            // Nếu productResponses không null, tính tổng số trang dựa trên tổng số sản phẩm và giới hạn
-            long totalProducts = productRedisService.countAllProducts(keyword, categoryId , pageRequest);
-            totalPages = (int) Math.ceil((double) totalProducts / limit);
         }
+
 
 
         return ResponseEntity.ok(ProductListResponse
@@ -271,6 +278,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     // Cập nhật sản phẩm
     public ResponseEntity<?> updateProduct(
             @PathVariable long id,
