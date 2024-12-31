@@ -79,8 +79,12 @@ public class WebSecurityConfig {
                             .requestMatchers(PUT,
                                     String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.ADMIN)
 
+                            //let login as ROLE_USER for testing
+                            /*
+                            //If you comment this, you must add @PreAuthorize("hasRole('ROLE_ADMIN')")
                             .requestMatchers(DELETE,
                                     String.format("%s/products/**", apiPrefix)).hasAnyRole(Role.ADMIN)
+                            */
 
                             .requestMatchers(POST,
                                     String.format("%s/orders/**", apiPrefix)).hasAnyRole(Role.USER)
