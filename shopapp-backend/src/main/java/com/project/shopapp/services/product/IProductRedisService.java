@@ -16,6 +16,11 @@ public interface IProductRedisService {
             PageRequest pageRequest
     ) throws JsonProcessingException;
 
+    Long countAllProducts(
+            String keyword,
+            Long categoryId,
+            PageRequest pageRequest) throws JsonProcessingException ;
+
     void saveAllProductsToCache(
             List<ProductResponse> productResponses,
             String keyword,

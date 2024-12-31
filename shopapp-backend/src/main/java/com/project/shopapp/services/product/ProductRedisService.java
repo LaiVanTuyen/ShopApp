@@ -52,6 +52,15 @@ public class ProductRedisService implements IProductRedisService {
         return json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : null;
     }
 
+    // Hàm này tính count các sản phẩm từ cache Redis
+    @Override
+    public Long countAllProducts(String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
+        String key = this.getKeyFrom(keyword, categoryId, pageRequest);
+        String json = redisTemplate.opsForValue().get(key);
+        List<ProductResponse> productResponses = json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : null;
+        return productResponses != null ? (long) productResponses.size() : 0L;
+    }
+
 
     // Hàm này lưu tất cả sản phẩm vào cache Redis
     @Override

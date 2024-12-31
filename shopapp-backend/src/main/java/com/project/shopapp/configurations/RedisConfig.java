@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnection;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -27,7 +26,7 @@ public class RedisConfig {
 
     // Create a connection factory to connect to Redis
     @Bean
-    public LettuceConnectionFactory redisConnectionFactory(){
+    public LettuceConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration =
                 new RedisStandaloneConfiguration(redisHost, redisPort);
         return new LettuceConnectionFactory(configuration);
@@ -35,7 +34,7 @@ public class RedisConfig {
 
     // Create a Redis template to interact with Redis
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(){
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory());
 

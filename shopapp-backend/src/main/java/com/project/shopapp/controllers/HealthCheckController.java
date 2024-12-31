@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
 import java.util.List;
 
 @RestController
@@ -21,7 +22,9 @@ public class HealthCheckController {
         // Perform additional health checks here
         try {
             List<Category> categories = categoryService.getAllCategories();
-            return ResponseEntity.ok("ok");
+            // get the computer's memory usage
+            String computerName = InetAddress.getLocalHost().getHostName();
+            return ResponseEntity.ok().body("Server is up and running on " + computerName);
         }catch (Exception e) {
             return ResponseEntity.badRequest().body("failed");
         }

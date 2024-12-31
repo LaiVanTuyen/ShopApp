@@ -189,6 +189,10 @@ public class ProductController {
                     keyword,
                     categoryId,
                     pageRequest);
+        } else {
+            // Nếu productResponses không null, tính tổng số trang dựa trên tổng số sản phẩm và giới hạn
+            long totalProducts = productRedisService.countAllProducts(keyword, categoryId , pageRequest);
+            totalPages = (int) Math.ceil((double) totalProducts / limit);
         }
 
 
