@@ -14,6 +14,7 @@ import com.project.shopapp.services.product.IProductRedisService;
 import com.project.shopapp.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.UrlResource;
@@ -32,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
@@ -45,7 +47,9 @@ public class ProductController {
     private final IProductService productService;
     private final IProductRedisService productRedisService;
     private final LocalizationUtils localizationUtils;
-
+    // Lấy đường dẫn upload từ cấu hình
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -120,18 +124,24 @@ public class ProductController {
     @GetMapping("/images/{imageName}")
     public ResponseEntity<?> viewImage(@PathVariable String imageName) {
         try {
-            java.nio.file.Path imagePath = Paths.get("uploads/" + imageName);
+            java.nio.file.Path imagePath = Paths.get(uploadDir, imageName);
             UrlResource resource = new UrlResource(imagePath.toUri());
 
-            if (resource.exists()) {
+            if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG)
                         .body(resource);
             } else {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_JPEG)
-                        .body(new UrlResource(Paths.get("uploads/notfound.jpeg").toUri()));
-                //return ResponseEntity.notFound().build();
+                Path notFoundImagePath = Paths.get(uploadDir, "notfound.jpeg");
+                UrlResource notFoundResource = new UrlResource(notFoundImagePath.toUri());
+
+                if (notFoundResource.exists() && notFoundResource.isReadable()) {
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.IMAGE_JPEG)
+                            .body(notFoundResource);
+                } else {
+                    return ResponseEntity.notFound().build();
+                }
             }
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

@@ -68,5 +68,10 @@ management:
       exposure:
         #include: "health"
         include: "health, info"
+upload:
+  dir: "D:/Spring boot/ShopApp/shopapp-backend/uploads"
+
+
+
 
 

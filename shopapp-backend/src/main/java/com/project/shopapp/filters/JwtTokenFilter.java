@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.*;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,13 +24,14 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 
-public class JwtTokenFilter extends OncePerRequestFilter{
+public class JwtTokenFilter extends OncePerRequestFilter {
     @Value("${api.prefix}")
     private String apiPrefix;
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtils jwtTokenUtil;
+
     @Override
-    protected void doFilterInternal(@NonNull  HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
@@ -51,7 +52,7 @@ public class JwtTokenFilter extends OncePerRequestFilter{
             if (phoneNumber != null
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User userDetails = (User) userDetailsService.loadUserByUsername(phoneNumber);
-                if(jwtTokenUtil.validateToken(token, userDetails)) {
+                if (jwtTokenUtil.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails,
@@ -63,47 +64,13 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 }
             }
             filterChain.doFilter(request, response); //enable bypass
-        }catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        } catch (Exception e) {
+            //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(e.getMessage());
         }
 
     }
-    /*private boolean isBypassToken(@NonNull HttpServletRequest request) {
-        final List<Pair<String, String>> bypassTokens = Arrays.asList(
-                // Healthcheck request, no JWT token required
-                Pair.of(String.format("%s/healthcheck/health", apiPrefix), "GET"),
-                Pair.of(String.format("%s/actuator/**", apiPrefix), "GET"),
-
-                Pair.of(String.format("%s/roles**", apiPrefix), "GET"),
-                Pair.of(String.format("%s/products**", apiPrefix), "GET"),
-                Pair.of(String.format("%s/categories**", apiPrefix), "GET"),
-                Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
-                Pair.of(String.format("%s/users/login", apiPrefix), "POST")
-        );
-
-        String requestPath = request.getServletPath();
-        String requestMethod = request.getMethod();
-
-        if (requestPath.startsWith(String.format("/%s/orders", apiPrefix))
-                && requestMethod.equals("GET")) {
-            // Check if the requestPath matches the desired pattern
-            if (requestPath.matches(String.format("/%s/orders/\\d+", apiPrefix))) {
-                return true;
-            }
-            // If the requestPath is just "%s/orders", return true
-            if (requestPath.equals(String.format("/%s/orders", apiPrefix))) {
-                return true;
-            }
-        }
-        for (Pair<String, String> bypassToken : bypassTokens) {
-            if (requestPath.contains(bypassToken.getFirst())
-                    && requestMethod.equals(bypassToken.getSecond())) {
-                return true;
-            }
-        }
-
-        return false;
-    }*/
 
     private boolean isBypassToken(@NonNull HttpServletRequest request) {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
@@ -112,10 +79,14 @@ public class JwtTokenFilter extends OncePerRequestFilter{
                 Pair.of(String.format("%s/actuator/**", apiPrefix), "GET"),
 
                 Pair.of(String.format("%s/roles**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/comments**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/coupons**", apiPrefix), "GET"),
+
                 Pair.of(String.format("%s/products**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/categories**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
+                Pair.of(String.format("%s/users/refreshToken", apiPrefix), "POST"),
 
                 // Swagger
                 Pair.of("/api-docs", "GET"),
