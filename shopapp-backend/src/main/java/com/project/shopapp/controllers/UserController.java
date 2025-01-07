@@ -1,13 +1,18 @@
 package com.project.shopapp.controllers;
 
-import com.project.shopapp.models.Role;
+import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.dtos.UpdateUserDTO;
+import com.project.shopapp.dtos.UserDTO;
+import com.project.shopapp.dtos.UserLoginDTO;
+import com.project.shopapp.models.Token;
 import com.project.shopapp.models.User;
 import com.project.shopapp.responses.LoginResponse;
 import com.project.shopapp.responses.RegisterResponse;
 import com.project.shopapp.responses.UserResponse;
 import com.project.shopapp.services.IUserService;
-import com.project.shopapp.components.LocalizationUtils;
+import com.project.shopapp.services.token.ITokenService;
 import com.project.shopapp.utils.MessageKeys;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,10 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import com.project.shopapp.dtos.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${api.prefix}/users")
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final IUserService userService;
     private final LocalizationUtils localizationUtils;
+    private final ITokenService tokenService;
 
     @PostMapping("/register")
     //can we register an "admin" user ?
@@ -63,19 +67,29 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-            @Valid @RequestBody UserLoginDTO userLoginDTO
+            @Valid @RequestBody UserLoginDTO userLoginDTO,
+            HttpServletRequest request
     ) {
         // Kiểm tra thông tin đăng nhập và sinh token
         try {
             String token = userService.login(
                     userLoginDTO.getPhoneNumber(),
-                    userLoginDTO.getPassword(),
-                    userLoginDTO.getRoleId() == null ? 1 : userLoginDTO.getRoleId()
+                    userLoginDTO.getPassword()
+//                    userLoginDTO.getRoleId() == null ? 1 : userLoginDTO.getRoleId() //Không cần thiết!
             );
+            String userAgent = request.getHeader("User-Agent");
+            User userDetail = userService.getUserDetailsFromToken(token);
+            Token jwtToken = tokenService.addToken(userDetail, token, isMobileDevice(userAgent));
+
             // Trả về token trong response
             return ResponseEntity.ok(LoginResponse.builder()
-                            .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY))
-                            .token(token)
+                    .message(localizationUtils.getLocalizedMessage(MessageKeys.LOGIN_SUCCESSFULLY))
+                    .token(jwtToken.getToken())
+                    .tokenType(jwtToken.getTokenType())
+                    //.refreshToken(jwtToken.getRefreshToken())
+                    .username(userDetail.getUsername())
+                    .roles(userDetail.getAuthorities().stream().map(item -> item.getAuthority()).toList())
+                    .id(userDetail.getId())
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -85,6 +99,13 @@ public class UserController {
             );
         }
     }
+
+    private boolean isMobileDevice(String userAgent) {
+        // Kiểm tra User-Agent header để xác định thiết bị di động
+        // Ví dụ đơn giản: nếu User-Agent chứa "Mobile" thì coi như là thiết bị di động
+        return userAgent.contains("mobile");
+    }
+
     @PostMapping("/details")
     public ResponseEntity<UserResponse> getUserDetails(
             @RequestHeader("Authorization") String authorizationHeader
@@ -97,6 +118,7 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
     @PutMapping("/details/{userId}")
     public ResponseEntity<UserResponse> updateUserDetails(
             @PathVariable Long userId,
