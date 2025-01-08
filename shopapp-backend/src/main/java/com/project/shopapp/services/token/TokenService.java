@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,15 +59,15 @@ public class TokenService implements ITokenService{
                 .build();
 
         // Tạo refresh token và gắn thời gian hết hạn cho nó
-        //newToken.setRefreshToken(UUID.randomUUID().toString());
-        //newToken.setRefreshExpirationDate(LocalDateTime.now().plusSeconds(expirationRefreshToken));
+        newToken.setRefreshToken(UUID.randomUUID().toString());
+        newToken.setRefreshExpirationDate(LocalDateTime.now().plusSeconds(expirationRefreshToken));
 
         return tokenRepository.save(newToken);
     }
 
-    /*@Transactional
-    @Override*/
-    /*public Token refreshToken(String refreshToken, User user) throws Exception {
+    @Transactional
+    @Override
+    public Token refreshToken(String refreshToken, User user) throws Exception {
         // Tìm token hiện tại bằng refresh token từ cơ sở dữ liệu
         Token existingToken = tokenRepository.findByRefreshToken(refreshToken);
         if(existingToken == null) {
@@ -92,5 +91,5 @@ public class TokenService implements ITokenService{
 
         // Lưu token đã cập nhật vào cơ sở dữ liệu
         return tokenRepository.save(existingToken);
-    }*/
+    }
 }

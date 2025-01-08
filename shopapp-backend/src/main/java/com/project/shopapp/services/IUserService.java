@@ -10,5 +10,6 @@ public interface IUserService {
 //    String login(String phoneNumber, String password, Long roleId) throws Exception;
 String login(String phoneNumber, String password) throws Exception;
     User getUserDetailsFromToken(String token) throws Exception;
+    User getUserDetailsFromRefreshToken(String token) throws Exception;
     User updateUser(Long userId, UpdateUserDTO updatedUserDTO) throws Exception;
 }

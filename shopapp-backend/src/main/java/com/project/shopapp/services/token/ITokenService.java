@@ -5,5 +5,5 @@ import com.project.shopapp.models.User;
 
 public interface ITokenService {
     Token addToken(User user, String token, boolean isMobileDevice);
-    //Token refreshToken(String refreshToken, User user) throws Exception;
+    Token refreshToken(String refreshToken, User user) throws Exception;
 }
