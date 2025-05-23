@@ -110,14 +110,14 @@ networks:
   #docker-compose -f ./deployment.yaml up -d shopapp-angular-container
   #docker logs shopapp-angular-container
 
-#docker-compose -f ./deployment.yaml rm -s -f redis-container
-#docker-compose -f ./deployment.yaml up -d redis-container
+  #docker-compose -f ./deployment.yaml rm -s -f redis-container
+  #docker-compose -f ./deployment.yaml up -d redis-container
 
-#docker-compose -f ./deployment.yaml rm -s -f debezium-kafka-container
-#docker-compose -f ./deployment.yaml up -d debezium-kafka-container
-#docker-compose -f ./deployment.yaml up -d debezium-connect-container
+  #docker-compose -f ./deployment.yaml rm -s -f debezium-kafka-container
+  #docker-compose -f ./deployment.yaml up -d debezium-kafka-container
+  #docker-compose -f ./deployment.yaml up -d debezium-connect-container
 
-#docker network create --driver bridge external_network
+  #docker network create --driver bridge external_network
 
 
 # Ghi chú:
