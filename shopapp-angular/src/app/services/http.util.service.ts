@@ -11,7 +11,4 @@ export class HttpUtilService {
       'Accept-Language': 'vi',
     });
   }
-
-  constructor() {
-  }
 }
