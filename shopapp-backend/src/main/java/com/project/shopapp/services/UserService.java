@@ -9,6 +9,7 @@ import com.project.shopapp.exceptions.DataNotFoundException;
 import com.project.shopapp.exceptions.PermissionDenyException;
 import com.project.shopapp.models.*;
 import com.project.shopapp.repositories.RoleRepository;
+import com.project.shopapp.repositories.TokenRepository;
 import com.project.shopapp.repositories.UserRepository;
 import com.project.shopapp.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class UserService implements IUserService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -73,8 +75,8 @@ public class UserService implements IUserService{
     @Override
     public String login(
             String phoneNumber,
-            String password,
-            Long roleId
+            String password
+//            Long roleId
     ) throws Exception {
         Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
         if(optionalUser.isEmpty()) {
@@ -89,10 +91,10 @@ public class UserService implements IUserService{
                 throw new BadCredentialsException(localizationUtils.getLocalizedMessage(MessageKeys.WRONG_PHONE_PASSWORD));
             }
         }
-        Optional<Role> optionalRole = roleRepository.findById(roleId);
-        if(optionalRole.isEmpty() || !roleId.equals(existingUser.getRole().getId())) {
-            throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.ROLE_DOES_NOT_EXISTS));
-        }
+//        Optional<Role> optionalRole = roleRepository.findById(roleId);
+//        if(optionalRole.isEmpty() || !roleId.equals(existingUser.getRole().getId())) {
+//            throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.ROLE_DOES_NOT_EXISTS));
+//        }
         if(!optionalUser.get().isActive()) {
             throw new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_IS_LOCKED));
         }
@@ -167,6 +169,12 @@ public class UserService implements IUserService{
         } else {
             throw new Exception("User not found");
         }
+    }
+
+    @Override
+    public User getUserDetailsFromRefreshToken(String token) throws Exception {
+        Token refreshToken = tokenRepository.findByRefreshToken(token);
+        return getUserDetailsFromToken(refreshToken.getToken());
     }
 }
 

@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class CategoryController {
     private final LocalizationUtils localizationUtils;
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     //Nếu tham số truyền vào là 1 object thì sao ? => Data Transfer Object = Request Object
     public ResponseEntity<CategoryResponse> createCategory(
             @Valid @RequestBody CategoryDTO categoryDTO,
@@ -62,6 +64,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UpdateCategoryResponse> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CategoryDTO categoryDTO
@@ -72,6 +75,7 @@ public class CategoryController {
         return ResponseEntity.ok(updateCategoryResponse);
     }
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok(localizationUtils.getLocalizedMessage(MessageKeys.DELETE_CATEGORY_SUCCESSFULLY));
