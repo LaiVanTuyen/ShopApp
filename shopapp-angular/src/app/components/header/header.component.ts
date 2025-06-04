@@ -50,9 +50,12 @@ export class HeaderComponent implements OnInit{
 
   handleItemClick(index:number):void {
     //alert(`Clicked on "${index}"`);
-    if (index == 0){
+    if (index === 0){
       debugger;
       this.router.navigate(['/user-profile']);
+    } else if (index === 2 ){
+      this.userService.removeUserFromLocalStorage();
+      this.tokenService.
     }
   }
 
