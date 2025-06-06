@@ -71,7 +71,7 @@ management:
         #include: "health"
         include: "health, info"
 upload:
-  dir: "D:/Spring boot/ShopApp/shopapp-backend/uploads"
+  dir: "D:/Java/ShopApp/shopapp-backend/uploads"
 
 
 
