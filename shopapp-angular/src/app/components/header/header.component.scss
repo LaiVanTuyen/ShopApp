@@ -1,60 +1,53 @@
-.dropdown-container {
-  position: relative;
+@import '../../styles/shared-styles.scss';
+
+header {
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(173, 178, 203);
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  list-style: none;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
+.navbar {
+    background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.dropdown-header {
-  display: block;
-  padding: 0.5rem 1rem;
-  margin-bottom: 0;
-  font-size: 0.875rem;
-  color: #6c757d;
-  white-space: nowrap;
-  background-color: #f8f9fa;
+.navbar .container {
+    background-color: rgba(0, 0, 0, 0) !important;
 }
 
-.dropdown-list {
-  padding: 0.5rem 0;
+.navbar .container .navbar-brand {
+    color: rgb(173, 178, 203);
 }
 
-.dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 0.25rem 1rem;
-  clear: both;
-  font-weight: 400;
-  color: #212529;
-  text-align: inherit;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
+.navbar .container .navbar-nav .nav-link {
+    color: rgb(173, 178, 203);
+    border-radius: 18px;
+    padding: 8px 16px;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
-  color: #16181b;
-  text-decoration: none;
-  background-color: #f8f9fa;
+.navbar .container .navbar-nav .nav-link.active {
+    background-color: $shopapp-color !important;
+    color: white !important;
+}
+.nav-item.active {
+    background-color: $shopapp-color !important;
+    color: white !important;
 }
 
-.user-menu {
-  cursor: pointer;
+/* Add this CSS to your project's stylesheet */
+
+.popover-list {
+    padding: 10px;
+}
+.popover-body {
+    padding: 0px;
+}
+.popover-item {
+    display: block;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.popover-item:hover {
+    background-color: #f0f0f0;
+    color: $shopapp-color;    
 }
