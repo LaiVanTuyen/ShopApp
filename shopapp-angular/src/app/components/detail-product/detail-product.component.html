@@ -3,24 +3,24 @@
     <div class="intro-section">
         <h1>Đây là trang chi tiết sản phẩm</h1>
         <p>Sử dụng Bootstrap</p>
-    </div>    
+    </div>
     <div class="row">
       <div class="col-md-6">
         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
-            <div *ngFor="let image of product?.product_images; let i = index" 
+            <div *ngFor="let image of product?.product_images; let i = index"
                  class="carousel-item" [ngClass]="{'active': i === currentImageIndex}">
               <div class="square-image">
                 <img [src]="image.image_url" class="product-image" alt="Product Image">
               </div>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" 
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
                   data-bs-slide="prev" (click)="previousImage()">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" 
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
                   data-bs-slide="next" (click)="nextImage()">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
@@ -28,8 +28,8 @@
         </div>
         <div class="row">
           <div class="thumbnail-container">
-            <div *ngFor="let image of product?.product_images; let i = index" 
-                 class="thumbnail-item" 
+            <div *ngFor="let image of product?.product_images; let i = index"
+                 class="thumbnail-item"
                  [ngClass]="{'active': i === currentImageIndex}"
                  (click)="thumbnailClick(i)">
               <img [src]="image.image_url" class="thumbnail-image" alt="Thumbnail Image">
@@ -55,7 +55,7 @@
             </div>
           </div>
         </div>
-      </div>      
-    </div>    
+      </div>
+    </div>
 </div>
 <app-footer></app-footer>
