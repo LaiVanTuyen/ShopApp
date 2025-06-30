@@ -27,4 +27,15 @@ public interface IProductRedisService {
             Long categoryId,
             PageRequest pageRequest
     ) throws JsonProcessingException;
+
+    List<ProductResponse> getFeaturedProducts(
+            String keyword,
+            Long categoryId,
+            PageRequest pageRequest
+    ) throws JsonProcessingException;
+
+    void saveAllFeaturedProductsToCache(
+            List<ProductResponse> productResponses,
+            String keyword, Long categoryId, PageRequest pageRequest
+    ) throws JsonProcessingException;
 }

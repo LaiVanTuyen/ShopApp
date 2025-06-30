@@ -39,4 +39,10 @@ public class Product extends BaseEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
 
+    @Column(name = "is_featured", nullable = false)
+    private Boolean isFeatured;
+
+    @Column(name = "sale_percent")
+    private Float salePercent;
+
 }

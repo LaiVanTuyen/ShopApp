@@ -23,4 +23,6 @@ public interface IProductService {
             ProductImageDTO productImageDTO) throws Exception;
 
     List<Product> findProductsByIds(List<Long> productIds);
+
+    Page<ProductResponse> getFeaturedProducts(String keyword, Long categoryId, PageRequest pageRequest);
 }

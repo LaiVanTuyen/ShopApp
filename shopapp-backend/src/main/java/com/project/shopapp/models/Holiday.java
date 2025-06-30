@@ -3,22 +3,23 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
+
 @Entity
-@Table(name = "categories")
-@Data//toString
+@Table(name = "holidays")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Category {
+public class Holiday {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "image")
-    private String image;
+    @Column(name = "date", nullable = false)
+    private java.sql.Date date;
 }

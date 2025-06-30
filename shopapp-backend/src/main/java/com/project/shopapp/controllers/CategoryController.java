@@ -10,7 +10,10 @@ import com.project.shopapp.utils.MessageKeys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +36,9 @@ public class CategoryController {
     private final LocaleResolver localeResolver;
     private final MessageSource messageSource;
     private final LocalizationUtils localizationUtils;
+    // Lấy đường dẫn upload từ cấu hình
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -39,7 +47,7 @@ public class CategoryController {
             @Valid @RequestBody CategoryDTO categoryDTO,
             BindingResult result) {
         CategoryResponse categoryResponse = new CategoryResponse();
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
                     .map(FieldError::getDefaultMessage)
@@ -56,8 +64,8 @@ public class CategoryController {
     //Hiện tất cả các categories
     @GetMapping("")
     public ResponseEntity<List<Category>> getAllCategories(
-            @RequestParam("page")     int page,
-            @RequestParam("limit")    int limit
+            @RequestParam("page") int page,
+            @RequestParam("limit") int limit
     ) {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
@@ -74,11 +82,38 @@ public class CategoryController {
         updateCategoryResponse.setMessage(localizationUtils.getLocalizedMessage(MessageKeys.UPDATE_CATEGORY_SUCCESSFULLY));
         return ResponseEntity.ok(updateCategoryResponse);
     }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok(localizationUtils.getLocalizedMessage(MessageKeys.DELETE_CATEGORY_SUCCESSFULLY));
+    }
+
+    @GetMapping("/images/{imageName}")
+    public ResponseEntity<?> viewImage(@PathVariable String imageName) {
+        try {
+            Path imagePath = Paths.get(uploadDir, "categories", imageName);
+            UrlResource resource = new UrlResource(imagePath.toUri());
+
+            // Nếu tài nguyên chính không tồn tại hoặc không đọc được, thử tải tài nguyên thay thế
+            if (!resource.exists() || !resource.isReadable()) {
+                imagePath = Paths.get(uploadDir, "notfound.jpeg");
+                resource = new UrlResource(imagePath.toUri());
+            }
+
+            // Nếu tài nguyên thay thế cũng không hợp lệ, trả về notFound
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        } catch (Exception e) {
+            // Có thể thêm logging ở đây để debug: logger.error("Lỗi khi xem ảnh: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

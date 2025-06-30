@@ -155,7 +155,7 @@ public class ProductController {
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
         String uniqueFilename = UUID.randomUUID().toString() + "_" + filename;
-        // Đường dẫn đến thư mục mà bạn muốn lưu file
+        // Đường dẫn đến th�� mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get("uploads");
         // Kiểm tra và tạo thư mục nếu nó không tồn tại
         if (!Files.exists(uploadDir)) {
@@ -174,6 +174,9 @@ public class ProductController {
         return contentType != null && contentType.startsWith("image/");
     }
 
+    /**
+     * API lấy danh sách sản phẩm (có phân trang, tìm kiếm, lọc theo category, cache redis)
+     */
     @GetMapping("")
     public ResponseEntity<ProductListResponse> getProducts(
             @RequestParam(defaultValue = "") String keyword,
@@ -185,20 +188,20 @@ public class ProductController {
         // Tạo Pageable từ thông tin trang và giới hạn
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
-                //Sort.by("createdAt").descending()
                 Sort.by("id").ascending()
         );
         logger.info(String.format("keyword = %s, category_id = %d, page = %d, limit = %d",
                 keyword, categoryId, page, limit));
 
+        // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService
                 .getAllProducts(keyword, categoryId, pageRequest);
-        if (productResponses!=null && !productResponses.isEmpty()) {
+        if (productResponses != null && !productResponses.isEmpty()) {
             totalPages = productResponses.get(0).getTotalPages();
         }
-        if (productResponses == null) {
+        // Nếu cache miss thì lấy từ DB và lưu lại cache
+        if (productResponses == null || productResponses.isEmpty()) {
             Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest);
-            // Lấy tổng số trang
             totalPages = productPage.getTotalPages();
             productResponses = productPage.getContent();
             // Bổ sung totalPages vào các đối tượng ProductResponse
@@ -211,9 +214,51 @@ public class ProductController {
                     categoryId,
                     pageRequest);
         }
+        return ResponseEntity.ok(ProductListResponse
+                .builder()
+                .products(productResponses)
+                .totalPages(totalPages)
+                .build());
+    }
 
+    /**
+     * API lấy danh sách sản phẩm nổi bật (có phân trang, tìm kiếm, lọc theo category, cache redis)
+     */
+    @GetMapping("/featured")
+    public ResponseEntity<ProductListResponse> getFeaturedProducts(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) throws JsonProcessingException {
+        int totalPages = 0;
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                Sort.by("id").ascending()
+        );
+        logger.info(String.format("[FEATURED] keyword = %s, category_id = %d, page = %d, limit = %d",
+                keyword, categoryId, page, limit));
 
-
+        // Lấy dữ liệu từ cache redis trước
+        List<ProductResponse> productResponses = productRedisService
+                .getFeaturedProducts(keyword, categoryId, pageRequest);
+        if (productResponses != null && !productResponses.isEmpty()) {
+            totalPages = productResponses.get(0).getTotalPages();
+        }
+        // Nếu cache miss thì lấy từ DB và lưu lại cache
+        if (productResponses == null || productResponses.isEmpty()) {
+            Page<ProductResponse> productPage = productService.getFeaturedProducts(keyword, categoryId, pageRequest);
+            totalPages = productPage.getTotalPages();
+            productResponses = productPage.getContent();
+            for (ProductResponse product : productResponses) {
+                product.setTotalPages(totalPages);
+            }
+            productRedisService.saveAllFeaturedProductsToCache(
+                    productResponses,
+                    keyword,
+                    categoryId,
+                    pageRequest);
+        }
         return ResponseEntity.ok(ProductListResponse
                 .builder()
                 .products(productResponses)
@@ -300,4 +345,6 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
 }

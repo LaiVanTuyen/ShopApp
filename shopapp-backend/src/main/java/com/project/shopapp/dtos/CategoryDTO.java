@@ -12,4 +12,6 @@ import lombok.*;
 public class CategoryDTO {
     @NotEmpty(message = "Category's name cannot be empty")
     private String name;
+    @NotNull(message = "Category's image cannot be null")
+    private String image;
 }

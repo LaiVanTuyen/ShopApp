@@ -30,6 +30,10 @@ public class ProductResponse extends BaseResponse{
 
     @JsonProperty("category_id")
     private Long categoryId;
+
+    private Boolean isFeatured;
+    private Float salePercent;
+
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())
@@ -39,9 +43,12 @@ public class ProductResponse extends BaseResponse{
                 .description(product.getDescription())
                 .categoryId(product.getCategory().getId())
                 .productImages(product.getProductImages())
+                .isFeatured(product.getIsFeatured())
+                .salePercent(product.getSalePercent())
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());
         return productResponse;
     }
+
 }
