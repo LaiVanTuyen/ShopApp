@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47d1c29f-94ee-4033-b0ea-ddf45ee02712" name="Changes" comment="">
+    <list default="true" id="a30d12fe-016e-4eb2-9860-fd308295e02e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eef3cc45-7e30-488d-ab78-3ea696d94acc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eef3cc45-7e30-488d-ab78-3ea696d94acc/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eef3cc45-7e30-488d-ab78-3ea696d94acc/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eef3cc45-7e30-488d-ab78-3ea696d94acc/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eef3cc45-7e30-488d-ab78-3ea696d94acc/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/redis-data/dump.rdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-angular/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-angular/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-angular/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-angular/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-angular/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-angular/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-angular/src/app/components/detail-product/detail-product.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-angular/src/app/components/detail-product/detail-product.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs/application.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,15 +19,26 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "LaiVanTuyen"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/LaiVanTuyen/ShopApp",
+    "accountId": "b677dacb-b995-460b-98dc-197dc80e7660"
+  }
+}]]></component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/shopapp-angular/package.json" />
+  </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 5
 }]]></component>
-  <component name="ProjectId" id="2yksTdtEMnkYoBdBxrFznB1RGTZ" />
+  <component name="ProjectId" id="2zJNlsMzoOwsvbbFMatWLgjzaxK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -50,18 +49,13 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.ShopappApplication.executor": "Run",
-    "git-widget-placeholder": "010-Angular-17",
+    "git-widget-placeholder": "#2 on 010-Angular-17",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
-    ]
   }
 }]]></component>
   <component name="RunManager">
@@ -76,19 +70,19 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
-        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="47d1c29f-94ee-4033-b0ea-ddf45ee02712" name="Changes" comment="" />
-      <created>1750389919201</created>
+      <changelist id="a30d12fe-016e-4eb2-9860-fd308295e02e" name="Changes" comment="" />
+      <created>1751445373542</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1750389919201</updated>
-      <workItem from="1750389921856" duration="1834000" />
+      <updated>1751445373542</updated>
+      <workItem from="1751445373979" duration="3676000" />
     </task>
     <servers />
   </component>

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-251.26094.121">
-    <data-source name="@localhost" uuid="e3b078dc-a44a-4b3d-8581-dd0b3d95fb5e">
+  <component name="dataSourceStorageLocal" created-in="IU-251.26927.53">
+    <data-source name="ShopApp@localhost" uuid="f1276825-0d40-4fb7-83cb-0a8ef4f9c758">
       <database-info product="MySQL" version="8.2.0" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MYSQL" exact-version="8.2.0" exact-driver-version="8.2">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
         <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
       </database-info>
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
-      <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="schema">
-            <name qname="@" />
-            <name qname="ShopApp" />
-          </node>
+          <node kind="schema" qname="@" />
         </introspection-scope>
       </schema-mapping>
       <load-sources>user_and_system_sources</load-sources>
+    </data-source>
+    <data-source name="0@localhost" uuid="c5480ff9-fb8c-4d24-b771-d26ba28e23bd">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="REDIS" />
+      <schema-mapping />
     </data-source>
   </component>
 </project>
