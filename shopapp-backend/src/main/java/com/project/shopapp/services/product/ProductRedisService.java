@@ -60,6 +60,25 @@ public class ProductRedisService implements IProductRedisService {
     }
 
     /**
+     * Hàm này sẽ tạo key cho cache sản phẩm mới nhất.
+     * Key bao gồm: keyword, categoryId, pageNumber, pageSize, sortDirection.
+     * Giúp phân biệt cache theo từng truy vấn khác nhau.
+     */
+    private String getLatestKeyFrom(String keyword, Long categoryId, PageRequest pageRequest) {
+        int pageNumber = pageRequest.getPageNumber();
+        int pageSize = pageRequest.getPageSize();
+        Sort.Order order = pageRequest.getSort().getOrderFor("id");
+        String sortDirection = (order != null && order.getDirection() == Sort.Direction.ASC) ? "ASC" : "DESC";
+        return String.format("latest_products:%s:%s:%d:%d:%s",
+                keyword != null ? keyword : "",
+                categoryId != null ? categoryId : "",
+                pageNumber, pageSize, sortDirection);
+    }
+
+
+
+
+    /**
      * Xóa toàn bộ cache trong Redis (cẩn thận khi sử dụng trên môi trường production).
      */
     @Override
@@ -127,5 +146,19 @@ public class ProductRedisService implements IProductRedisService {
         String json = redisObjectMapper.writeValueAsString(productResponses);
         redisTemplate.opsForValue().set(key, json);
         // Nếu muốn set TTL: redisTemplate.opsForValue().set(key, json, 10, java.util.concurrent.TimeUnit.MINUTES);
+    }
+
+    @Override
+    public List<ProductResponse> getLatestProducts(String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
+        String key = this.getLatestKeyFrom(keyword,categoryId, pageRequest);
+        String json = redisTemplate.opsForValue().get(key);
+        return json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : java.util.Collections.emptyList();
+    }
+
+    @Override
+    public void saveAllLatestProductsToCache(List<ProductResponse> productResponses, String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
+        String key = this.getLatestKeyFrom(keyword, categoryId, pageRequest);
+        String json = redisObjectMapper.writeValueAsString(productResponses);
+        redisTemplate.opsForValue().set(key, json);
     }
 }

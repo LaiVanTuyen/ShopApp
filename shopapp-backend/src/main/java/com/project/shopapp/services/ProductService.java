@@ -12,14 +12,19 @@ import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService{
@@ -64,6 +69,15 @@ public class ProductService implements IProductService{
         Page<Product> productsPage;
         productsPage = productRepository.searchFeaturedProducts(categoryId, keyword, pageRequest);
         return productsPage.map(ProductResponse::fromProduct);
+    }
+
+    @Override
+    public Page<ProductResponse> getLatestProducts(String keyword, Long categoryId, PageRequest pageRequest) {
+        // Lấy danh sách sản phẩm mới nhất theo categoryId (nếu có)
+        LocalDate startDate = LocalDate.now().minusDays(1);
+        LocalDate endDate = LocalDate.now();
+        Page<Product> products = productRepository.searchLatestProducts(categoryId, keyword, pageRequest, startDate, endDate);
+        return products.map(ProductResponse::fromProduct);
     }
 
 

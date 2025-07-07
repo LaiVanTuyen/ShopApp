@@ -25,4 +25,5 @@ public interface IProductService {
     List<Product> findProductsByIds(List<Long> productIds);
 
     Page<ProductResponse> getFeaturedProducts(String keyword, Long categoryId, PageRequest pageRequest);
+    Page<ProductResponse> getLatestProducts(String keyword, Long categoryId, PageRequest pageRequest);
 }

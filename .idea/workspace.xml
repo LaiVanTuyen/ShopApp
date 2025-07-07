@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a30d12fe-016e-4eb2-9860-fd308295e02e" name="Changes" comment="">
+    <list default="true" id="675d274d-001a-487c-a24a-7c7e185e5b8c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shopapp-backend/src/main/resources/dev/db/migration/V6__add_sample_comments_with_rating.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs/application.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,14 +38,11 @@
     "accountId": "b677dacb-b995-460b-98dc-197dc80e7660"
   }
 }]]></component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/shopapp-angular/package.json" />
-  </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 5
 }]]></component>
-  <component name="ProjectId" id="2zJNlsMzoOwsvbbFMatWLgjzaxK" />
+  <component name="ProjectId" id="2zXR3sQDfpEDrCwHDEQyrb3OaiJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -46,9 +50,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.ShopappApplication.executor": "Run",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.ShopappApplication.executor": "Debug",
     "git-widget-placeholder": "#2 on 010-Angular-17",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -56,8 +65,17 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "redis",
+      "mysql"
+    ]
   }
 }]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RunManager">
     <configuration name="ShopappApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="shopapp" />
@@ -77,16 +95,37 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="a30d12fe-016e-4eb2-9860-fd308295e02e" name="Changes" comment="" />
-      <created>1751445373542</created>
+      <changelist id="675d274d-001a-487c-a24a-7c7e185e5b8c" name="Changes" comment="" />
+      <created>1751875239403</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1751445373542</updated>
-      <workItem from="1751445373979" duration="3676000" />
+      <updated>1751875239403</updated>
+      <workItem from="1751875241879" duration="9494000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java</url>
+          <line>288</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java</url>
+          <line>294</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

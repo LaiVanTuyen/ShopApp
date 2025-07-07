@@ -266,6 +266,54 @@ public class ProductController {
                 .build());
     }
 
+    /**
+     * API lấy danh sach sản phẩm mới nhất
+     */
+    @GetMapping("/latest")
+    public ResponseEntity<ProductListResponse> getLatestProducts(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+            ) throws JsonProcessingException {
+        int totalPages = 0;
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                Sort.by("id").ascending()
+        );
+        logger.info(String.format("[LATEST] keyword = %s, category_id = %d, page = %d, limit = %d",
+                keyword, categoryId, page, limit));
+
+
+        // Lấy dữ liệu từ cache redis trước
+        List<ProductResponse> productResponses = productRedisService
+                .getLatestProducts(keyword, categoryId, pageRequest);
+        if (productResponses != null && !productResponses.isEmpty()) {
+            totalPages = productResponses.get(0).getTotalPages();
+        }
+        // Nếu cache miss thì lấy từ DB và lưu lại cache
+        if (productResponses == null || productResponses.isEmpty()) {
+            Page<ProductResponse> productPage = productService.getLatestProducts(keyword, categoryId, pageRequest);
+            totalPages = productPage.getTotalPages();
+            productResponses = productPage.getContent();
+            for (ProductResponse product : productResponses) {
+                product.setTotalPages(totalPages);
+            }
+            productRedisService.saveAllLatestProductsToCache(
+                    productResponses,
+                    keyword,
+                    categoryId,
+                    pageRequest);
+        }
+
+        return ResponseEntity.ok(ProductListResponse
+                .builder()
+                .products(productResponses)
+                .totalPages(totalPages)
+                .build());
+    }
+
+
     //http://localhost:8088/api/v1/products/6
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(

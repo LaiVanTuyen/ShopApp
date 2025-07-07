@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByName(String name);
@@ -34,6 +35,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE ( :categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId ) " +
             "AND ( :keyword IS NULL OR :keyword = '' OR p.name LIKE CONCAT('%', :keyword, '%') OR p.description LIKE CONCAT('%', :keyword, '%') ) " +
-            "ORDER BY p.createdAt DESC")
-    Page<Product> searchLatestProducts(@Param("categoryId") Long categoryId, @Param("keyword") String keyword, Pageable pageable);
+            "AND FUNCTION('DATE', p.createdAt) >= :startDate AND FUNCTION('DATE', p.createdAt) <= :endDate "  +
+            "ORDER BY p.createdAt DESC " )
+    Page<Product> searchLatestProducts(@Param("categoryId") Long categoryId,
+                                       @Param("keyword") String keyword,
+                                       Pageable pageable,
+                                       @Param("startDate") LocalDate startDate,
+                                       @Param("endDate") LocalDate endDate);
+
 }
