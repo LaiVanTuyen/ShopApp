@@ -45,4 +45,7 @@ public class Product extends BaseEntity{
     @Column(name = "sale_percent")
     private Float salePercent;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
 }

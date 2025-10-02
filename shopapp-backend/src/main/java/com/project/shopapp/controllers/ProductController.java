@@ -190,8 +190,7 @@ public class ProductController {
                 page, limit,
                 Sort.by("id").ascending()
         );
-        logger.info(String.format("keyword = %s, category_id = %d, page = %d, limit = %d",
-                keyword, categoryId, page, limit));
+        logger.info("keyword = {}, category_id = {}, page = {}, limit = {}", keyword, categoryId, page, limit);
 
         // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService
@@ -236,8 +235,7 @@ public class ProductController {
                 page, limit,
                 Sort.by("id").ascending()
         );
-        logger.info(String.format("[FEATURED] keyword = %s, category_id = %d, page = %d, limit = %d",
-                keyword, categoryId, page, limit));
+        logger.info("[FEATURED] keyword = {}, category_id = {}, page = {}, limit = {}", keyword, categoryId, page, limit);
 
         // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService
@@ -270,49 +268,33 @@ public class ProductController {
      * API lấy danh sach sản phẩm mới nhất
      */
     @GetMapping("/latest")
-    public ResponseEntity<ProductListResponse> getLatestProducts(
+    public ResponseEntity<?> getLatestProducts(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
-            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
-            ) throws JsonProcessingException {
-        int totalPages = 0;
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                Sort.by("id").ascending()
-        );
-        logger.info(String.format("[LATEST] keyword = %s, category_id = %d, page = %d, limit = %d",
-                keyword, categoryId, page, limit));
+    ) throws JsonProcessingException {
+
+        logger.info("[LATEST] keyword = {}, category_id = {}, limit = {}", keyword, categoryId, limit);
 
 
         // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService
-                .getLatestProducts(keyword, categoryId, pageRequest);
-        if (productResponses != null && !productResponses.isEmpty()) {
-            totalPages = productResponses.get(0).getTotalPages();
-        }
+                .getLatestProducts(keyword, categoryId, limit);
+
         // Nếu cache miss thì lấy từ DB và lưu lại cache
         if (productResponses == null || productResponses.isEmpty()) {
-            Page<ProductResponse> productPage = productService.getLatestProducts(keyword, categoryId, pageRequest);
-            totalPages = productPage.getTotalPages();
-            productResponses = productPage.getContent();
-            for (ProductResponse product : productResponses) {
-                product.setTotalPages(totalPages);
-            }
+            List<ProductResponse> productPage = productService.getLatestProducts(keyword, categoryId, limit);
             productRedisService.saveAllLatestProductsToCache(
-                    productResponses,
+                    productPage,
                     keyword,
                     categoryId,
-                    pageRequest);
+                    limit);
+
+            productResponses = productPage;
         }
 
-        return ResponseEntity.ok(ProductListResponse
-                .builder()
-                .products(productResponses)
-                .totalPages(totalPages)
-                .build());
+        return ResponseEntity.ok(productResponses);
     }
-
 
     //http://localhost:8088/api/v1/products/6
     @GetMapping("/{id}")
@@ -394,5 +376,49 @@ public class ProductController {
         }
     }
 
+    /**
+     * API lấy danh sách sản phẩm top rated (dựa vào rating trung bình của comment)
+     */
+    @GetMapping("/top-rated")
+    public ResponseEntity<ProductListResponse> getTopRatedProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        Page<ProductResponse> productPage = productService.getTopRatedProducts(pageRequest);
+        int totalPages = productPage.getTotalPages();
+        List<ProductResponse> productResponses = productPage.getContent();
+        // Bổ sung totalPages vào các đối tượng ProductResponse nếu cần
+        for (ProductResponse product : productResponses) {
+            product.setTotalPages(totalPages);
+        }
+        return ResponseEntity.ok(ProductListResponse
+                .builder()
+                .products(productResponses)
+                .totalPages(totalPages)
+                .build());
+    }
+
+    /**
+     * API lấy danh sách sản phẩm top sales (phần trăm giảm giá thực tế cao nhất)
+     */
+    @GetMapping("/top-sales")
+    public ResponseEntity<ProductListResponse> getTopSalesProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        Page<ProductResponse> productPage = productService.getTopSalesProducts(pageRequest);
+        int totalPages = productPage.getTotalPages();
+        List<ProductResponse> productResponses = productPage.getContent();
+        for (ProductResponse product : productResponses) {
+            product.setTotalPages(totalPages);
+        }
+        return ResponseEntity.ok(ProductListResponse
+                .builder()
+                .products(productResponses)
+                .totalPages(totalPages)
+                .build());
+    }
 
 }

@@ -60,21 +60,16 @@ public class ProductRedisService implements IProductRedisService {
     }
 
     /**
-     * Hàm này sẽ tạo key cho cache sản phẩm mới nhất.
-     * Key bao gồm: keyword, categoryId, pageNumber, pageSize, sortDirection.
+     * Hàm tạo key cho cache sản phẩm mới nhất.
+     * Key bao gồm: keyword, categoryId, limit.
      * Giúp phân biệt cache theo từng truy vấn khác nhau.
      */
-    private String getLatestKeyFrom(String keyword, Long categoryId, PageRequest pageRequest) {
-        int pageNumber = pageRequest.getPageNumber();
-        int pageSize = pageRequest.getPageSize();
-        Sort.Order order = pageRequest.getSort().getOrderFor("id");
-        String sortDirection = (order != null && order.getDirection() == Sort.Direction.ASC) ? "ASC" : "DESC";
-        return String.format("latest_products:%s:%s:%d:%d:%s",
+    private String getLatestKeyFrom(String keyword, Long categoryId, int limit) {
+        return String.format("latest_products:%s:%s:%d",
                 keyword != null ? keyword : "",
                 categoryId != null ? categoryId : "",
-                pageNumber, pageSize, sortDirection);
+                limit);
     }
-
 
 
 
@@ -149,15 +144,15 @@ public class ProductRedisService implements IProductRedisService {
     }
 
     @Override
-    public List<ProductResponse> getLatestProducts(String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
-        String key = this.getLatestKeyFrom(keyword,categoryId, pageRequest);
+    public List<ProductResponse> getLatestProducts(String keyword, Long categoryId, int limit) throws JsonProcessingException {
+        String key = this.getLatestKeyFrom(keyword,categoryId, limit);
         String json = redisTemplate.opsForValue().get(key);
         return json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : java.util.Collections.emptyList();
     }
 
     @Override
-    public void saveAllLatestProductsToCache(List<ProductResponse> productResponses, String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
-        String key = this.getLatestKeyFrom(keyword, categoryId, pageRequest);
+    public void saveAllLatestProductsToCache(List<ProductResponse> productResponses, String keyword, Long categoryId, int limit) throws JsonProcessingException {
+        String key = this.getLatestKeyFrom(keyword, categoryId, limit);
         String json = redisObjectMapper.writeValueAsString(productResponses);
         redisTemplate.opsForValue().set(key, json);
     }

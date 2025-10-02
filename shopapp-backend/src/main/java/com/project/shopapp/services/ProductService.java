@@ -10,14 +10,18 @@ import com.project.shopapp.models.ProductImage;
 import com.project.shopapp.repositories.CategoryRepository;
 import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
+import com.project.shopapp.repositories.ProductHolidayDiscountRepository;
 import com.project.shopapp.responses.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +35,7 @@ public class ProductService implements IProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
+    private final ProductHolidayDiscountRepository productHolidayDiscountRepository;
     @Override
     @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
@@ -52,7 +57,7 @@ public class ProductService implements IProductService{
 
     @Override
     public Product getProductById(long productId) throws Exception {
-        Optional<Product> optionalProduct = productRepository.getDetailProduct(productId);
+        Optional<Product> optionalProduct = productRepository.getDetailProduct(Long.valueOf(productId));
         if(optionalProduct.isPresent()) {
             return optionalProduct.get();
         }
@@ -66,28 +71,40 @@ public class ProductService implements IProductService{
     @Override
     public Page<ProductResponse> getFeaturedProducts(String keyword, Long categoryId, PageRequest pageRequest) {
         // Lấy danh sách sản phẩm nổi bật theo trang (page), giới hạn (limit), và categoryId (nếu có)
-        Page<Product> productsPage;
-        productsPage = productRepository.searchFeaturedProducts(categoryId, keyword, pageRequest);
-        return productsPage.map(ProductResponse::fromProduct);
+        Page<Product> productsPage = productRepository.searchFeaturedProducts(categoryId, keyword, pageRequest);
+        Date currentDate = Date.valueOf(LocalDate.now());
+        List<ProductResponse> responses = productsPage.getContent().stream().map(product -> {
+            ProductResponse resp = ProductResponse.fromProduct(product);
+            resp.setActualSalePercent(calculateActualSalePercent(product, currentDate));
+            return resp;
+        }).toList();
+        return new PageImpl<>(responses, pageRequest, productsPage.getTotalElements());
     }
 
     @Override
-    public Page<ProductResponse> getLatestProducts(String keyword, Long categoryId, PageRequest pageRequest) {
-        // Lấy danh sách sản phẩm mới nhất theo categoryId (nếu có)
-        LocalDate startDate = LocalDate.now().minusDays(1);
-        LocalDate endDate = LocalDate.now();
-        Page<Product> products = productRepository.searchLatestProducts(categoryId, keyword, pageRequest, startDate, endDate);
-        return products.map(ProductResponse::fromProduct);
+    public List<ProductResponse> getLatestProducts(String keyword, Long categoryId, int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        List<Product> products = productRepository.searchLatestProducts(categoryId, keyword, pageable);
+        Date currentDate = Date.valueOf(LocalDate.now());
+        return products.stream().map(product -> {
+            ProductResponse resp = ProductResponse.fromProduct(product);
+            resp.setActualSalePercent(calculateActualSalePercent(product, currentDate));
+            return resp;
+        }).toList();
     }
-
 
     @Override
     public Page<ProductResponse> getAllProducts(String keyword,
                                                 Long categoryId, PageRequest pageRequest) {
         // Lấy danh sách sản phẩm theo trang (page), giới hạn (limit), và categoryId (nếu có)
-        Page<Product> productsPage;
-        productsPage = productRepository.searchProducts(categoryId, keyword, pageRequest);
-        return productsPage.map(ProductResponse::fromProduct);
+        Page<Product> productsPage = productRepository.searchProducts(categoryId, keyword, pageRequest);
+        Date currentDate = Date.valueOf(LocalDate.now());
+        List<ProductResponse> responses = productsPage.getContent().stream().map(product -> {
+            ProductResponse resp = ProductResponse.fromProduct(product);
+            resp.setActualSalePercent(calculateActualSalePercent(product, currentDate));
+            return resp;
+        }).toList();
+        return new PageImpl<>(responses, pageRequest, productsPage.getTotalElements());
     }
     @Override
     @Transactional
@@ -119,7 +136,7 @@ public class ProductService implements IProductService{
     @Override
     @Transactional
     public void deleteProduct(long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(Long.valueOf(id));
         optionalProduct.ifPresent(productRepository::delete);
     }
 
@@ -149,6 +166,35 @@ public class ProductService implements IProductService{
                     +ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
         }
         return productImageRepository.save(newProductImage);
+    }
+
+    @Override
+    public Page<ProductResponse> getTopRatedProducts(PageRequest pageRequest) {
+        Page<Product> productsPage = productRepository.findTopRatedProducts(pageRequest);
+        return productsPage.map(ProductResponse::fromProduct);
+    }
+
+    @Override
+    public Page<ProductResponse> getTopSalesProducts(PageRequest pageRequest) {
+        Date currentDate = Date.valueOf(LocalDate.now());
+        List<Object[]> results = productRepository.findTopSalesProducts(currentDate, pageRequest);
+        List<ProductResponse> responses = new java.util.ArrayList<>();
+        for (Object[] row : results) {
+            Product product = (Product) productRepository.getEntityManager().getReference(Product.class, ((Number)row[0]).longValue());
+            ProductResponse resp = ProductResponse.fromProduct(product);
+            resp.setActualSalePercent(row[row.length-1] != null ? ((Number)row[row.length-1]).doubleValue() : null);
+            responses.add(resp);
+        }
+        int total = responses.size();
+        return new PageImpl<>(responses, pageRequest, total);
+    }
+
+    public Double calculateActualSalePercent(Product product, Date currentDate) {
+        Double discount = productHolidayDiscountRepository.findDiscountPercentByProductIdAndDate(product.getId(), currentDate);
+        if (discount != null) {
+            return discount;
+        }
+        return product.getSalePercent() != null ? product.getSalePercent().doubleValue() : null;
     }
 
 }

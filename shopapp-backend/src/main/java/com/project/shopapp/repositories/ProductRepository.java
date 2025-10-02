@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByName(String name);
+
     Page<Product> findAll(Pageable pageable);//phân trang
 
     @Query("SELECT p FROM Product p WHERE " +
@@ -20,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> searchProducts
             (@Param("categoryId") Long categoryId,
              @Param("keyword") String keyword, Pageable pageable);
+
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productImages WHERE p.id = :productId")
     Optional<Product> getDetailProduct(@Param("productId") Long productId);
 
@@ -33,14 +35,24 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> searchFeaturedProducts(Long categoryId, String keyword, Pageable pageable);
 
 
-    @Query("SELECT p FROM Product p WHERE ( :categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId ) " +
-            "AND ( :keyword IS NULL OR :keyword = '' OR p.name LIKE CONCAT('%', :keyword, '%') OR p.description LIKE CONCAT('%', :keyword, '%') ) " +
-            "AND FUNCTION('DATE', p.createdAt) >= :startDate AND FUNCTION('DATE', p.createdAt) <= :endDate "  +
-            "ORDER BY p.createdAt DESC " )
-    Page<Product> searchLatestProducts(@Param("categoryId") Long categoryId,
+        @Query("SELECT p FROM Product p WHERE (:categoryId IS NULL OR :categoryId = 0 OR p.category.id = :categoryId) " +
+            "AND (:keyword IS NULL OR :keyword = '' OR p.name LIKE %:keyword% OR p.description LIKE %:keyword%) " +
+            "ORDER BY p.createdAt DESC")
+    List<Product> searchLatestProducts(@Param("categoryId") Long categoryId,
                                        @Param("keyword") String keyword,
-                                       Pageable pageable,
-                                       @Param("startDate") LocalDate startDate,
-                                       @Param("endDate") LocalDate endDate);
+                                       Pageable pageable);
 
+    @Query("SELECT p FROM Product p LEFT JOIN p.comments c " +
+            "GROUP BY p.id " +
+            "ORDER BY COALESCE(AVG(c.rating), 0) DESC")
+    Page<Product> findTopRatedProducts(Pageable pageable);
+
+    @Query(value = "SELECT p.*, "+
+            "COALESCE(phd.discount_percent, p.sale_percent) AS actual_sale_percent "+
+            "FROM products p "+
+            "LEFT JOIN product_holiday_discount phd ON phd.product_id = p.id "+
+            "LEFT JOIN holidays h ON phd.holiday_id = h.id AND h.date = :currentDate "+
+            "ORDER BY actual_sale_percent DESC",
+            nativeQuery = true)
+    List<Object[]> findTopSalesProducts(@Param("currentDate") java.sql.Date currentDate, Pageable pageable);
 }

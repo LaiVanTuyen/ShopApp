@@ -42,13 +42,13 @@ public interface IProductRedisService {
     List<ProductResponse> getLatestProducts(
             String keyword,
             Long categoryId,
-            PageRequest pageRequest
+            int limit
     ) throws JsonProcessingException;
 
     void saveAllLatestProductsToCache(
             List<ProductResponse> productResponses,
             String keyword,
             Long categoryId,
-            PageRequest pageRequest
+            int limit
     ) throws JsonProcessingException;
 }

@@ -33,6 +33,7 @@ public class ProductResponse extends BaseResponse{
 
     private Boolean isFeatured;
     private Float salePercent;
+    private Double actualSalePercent;
 
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
