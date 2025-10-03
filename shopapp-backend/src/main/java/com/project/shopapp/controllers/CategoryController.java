@@ -115,5 +115,10 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-}
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Category> getDetailCategory(@PathVariable Long id) {
+        Category category = categoryService.getCategoryById(id);
+        return ResponseEntity.ok(category);
+    }
+}

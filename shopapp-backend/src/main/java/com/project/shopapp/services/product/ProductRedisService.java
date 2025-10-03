@@ -25,7 +25,7 @@ public class ProductRedisService implements IProductRedisService {
 
     /**
      * Hàm tạo key cho cache sản phẩm thường.
-     * Key bao gồm: keyword, categoryId, pageNumber, pageSize, sortDirection.
+     * Key bao gồm: keyword, categoryId, pageNumber, pageSize, sortProperty, sortDirection.
      * Giúp phân biệt cache theo từng truy vấn khác nhau.
      */
     private String getKeyFrom(String keyword,
@@ -33,17 +33,19 @@ public class ProductRedisService implements IProductRedisService {
                               PageRequest pageRequest) {
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
-        Sort.Order order = pageRequest.getSort().getOrderFor("id");
-        String sortDirection = (order != null && order.getDirection() == Sort.Direction.ASC) ? "ASC" : "DESC";
-        return String.format("all_products:%s:%s:%d:%d:%s",
+        // Lấy thông tin sort đầu tiên (nếu có), nếu không thì mặc định là id ASC
+        Sort.Order order = pageRequest.getSort().stream().findFirst().orElse(Sort.Order.asc("id"));
+        String sortProperty = order.getProperty();
+        String sortDirection = order.getDirection().name();
+        return String.format("all_products:%s:%s:%d:%d:%s:%s",
                 keyword != null ? keyword : "",
                 categoryId != null ? categoryId : "",
-                pageNumber, pageSize, sortDirection);
+                pageNumber, pageSize, sortProperty, sortDirection);
     }
 
     /**
      * Hàm tạo key cho cache sản phẩm nổi bật.
-     * Key cũng bao gồm: keyword, categoryId, pageNumber, pageSize, sortDirection.
+     * Key cũng bao gồm: keyword, categoryId, pageNumber, pageSize, sortProperty, sortDirection.
      * Prefix khác biệt để tránh ghi đè với cache sản phẩm thường.
      */
     private String getFeaturedKeyFrom(String keyword,
@@ -51,12 +53,13 @@ public class ProductRedisService implements IProductRedisService {
                                       PageRequest pageRequest) {
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
-        Sort.Order order = pageRequest.getSort().getOrderFor("id");
-        String sortDirection = (order != null && order.getDirection() == Sort.Direction.ASC) ? "ASC" : "DESC";
-        return String.format("featured_products:%s:%s:%d:%d:%s",
+        Sort.Order order = pageRequest.getSort().stream().findFirst().orElse(Sort.Order.asc("id"));
+        String sortProperty = order.getProperty();
+        String sortDirection = order.getDirection().name();
+        return String.format("featured_products:%s:%s:%d:%d:%s:%s",
                 keyword != null ? keyword : "",
                 categoryId != null ? categoryId : "",
-                pageNumber, pageSize, sortDirection);
+                pageNumber, pageSize, sortProperty, sortDirection);
     }
 
     /**

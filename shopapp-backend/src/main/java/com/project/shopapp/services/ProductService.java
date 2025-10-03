@@ -12,6 +12,8 @@ import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
 import com.project.shopapp.repositories.ProductHolidayDiscountRepository;
 import com.project.shopapp.responses.ProductResponse;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,15 +29,18 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProductService implements IProductService{
+public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductHolidayDiscountRepository productHolidayDiscountRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
@@ -43,7 +48,7 @@ public class ProductService implements IProductService{
                 .findById(productDTO.getCategoryId())
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find category with id: "+productDTO.getCategoryId()));
+                                "Cannot find category with id: " + productDTO.getCategoryId()));
 
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
@@ -58,11 +63,12 @@ public class ProductService implements IProductService{
     @Override
     public Product getProductById(long productId) throws Exception {
         Optional<Product> optionalProduct = productRepository.getDetailProduct(Long.valueOf(productId));
-        if(optionalProduct.isPresent()) {
+        if (optionalProduct.isPresent()) {
             return optionalProduct.get();
         }
         throw new DataNotFoundException("Cannot find product with id =" + productId);
     }
+
     @Override
     public List<Product> findProductsByIds(List<Long> productIds) {
         return productRepository.findProductsByIds(productIds);
@@ -106,6 +112,7 @@ public class ProductService implements IProductService{
         }).toList();
         return new PageImpl<>(responses, pageRequest, productsPage.getTotalElements());
     }
+
     @Override
     @Transactional
     public Product updateProduct(
@@ -114,14 +121,14 @@ public class ProductService implements IProductService{
     )
             throws Exception {
         Product existingProduct = getProductById(id);
-        if(existingProduct != null) {
+        if (existingProduct != null) {
             //copy các thuộc tính từ DTO -> Product
             //Có thể sử dụng ModelMapper
             Category existingCategory = categoryRepository
                     .findById(productDTO.getCategoryId())
                     .orElseThrow(() ->
                             new DataNotFoundException(
-                                    "Cannot find category with id: "+productDTO.getCategoryId()));
+                                    "Cannot find category with id: " + productDTO.getCategoryId()));
             existingProduct.setName(productDTO.getName());
             existingProduct.setCategory(existingCategory);
             existingProduct.setPrice(productDTO.getPrice());
@@ -144,6 +151,7 @@ public class ProductService implements IProductService{
     public boolean existsByName(String name) {
         return productRepository.existsByName(name);
     }
+
     @Override
     @Transactional
     public ProductImage createProductImage(
@@ -153,17 +161,17 @@ public class ProductService implements IProductService{
                 .findById(productId)
                 .orElseThrow(() ->
                         new DataNotFoundException(
-                                "Cannot find product with id: "+productImageDTO.getProductId()));
+                                "Cannot find product with id: " + productImageDTO.getProductId()));
         ProductImage newProductImage = ProductImage.builder()
                 .product(existingProduct)
                 .imageUrl(productImageDTO.getImageUrl())
                 .build();
         //Ko cho insert quá 5 ảnh cho 1 sản phẩm
         int size = productImageRepository.findByProductId(productId).size();
-        if(size >= ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
+        if (size >= ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
             throw new InvalidParamException(
                     "Number of images must be <= "
-                    +ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
+                            + ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
         }
         return productImageRepository.save(newProductImage);
     }
@@ -180,9 +188,10 @@ public class ProductService implements IProductService{
         List<Object[]> results = productRepository.findTopSalesProducts(currentDate, pageRequest);
         List<ProductResponse> responses = new java.util.ArrayList<>();
         for (Object[] row : results) {
-            Product product = (Product) productRepository.getEntityManager().getReference(Product.class, ((Number)row[0]).longValue());
+            Long productId = ((Number) row[0]).longValue();
+            Product product = entityManager.getReference(Product.class, productId);
             ProductResponse resp = ProductResponse.fromProduct(product);
-            resp.setActualSalePercent(row[row.length-1] != null ? ((Number)row[row.length-1]).doubleValue() : null);
+            resp.setActualSalePercent(calculateActualSalePercent(product, currentDate));
             responses.add(resp);
         }
         int total = responses.size();

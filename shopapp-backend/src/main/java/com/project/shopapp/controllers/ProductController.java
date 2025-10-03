@@ -182,15 +182,19 @@ public class ProductController {
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int limit
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false, name = "sort_by") String sortBy,
+            @RequestParam(required = false, name = "sort_dir", defaultValue = "asc") String sortDir
     ) throws JsonProcessingException {
         int totalPages = 0;
-        // Tạo Pageable từ thông tin trang và giới hạn
+        // Xác định trường sort và chiều sort
+        Sort.Direction direction = "desc".equalsIgnoreCase(sortDir) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = (sortBy != null && !sortBy.isEmpty()) ? Sort.by(direction, sortBy) : Sort.by(direction, "id");
         PageRequest pageRequest = PageRequest.of(
                 page, limit,
-                Sort.by("id").ascending()
+                sort
         );
-        logger.info("keyword = {}, category_id = {}, page = {}, limit = {}", keyword, categoryId, page, limit);
+        logger.info("keyword = {}, category_id = {}, page = {}, limit = {}, sort_by = {}, sort_dir = {}", keyword, categoryId, page, limit, sortBy, sortDir);
 
         // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService

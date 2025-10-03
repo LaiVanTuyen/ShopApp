@@ -4,27 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="43bb21fe-c879-4ac2-bd79-7ecfb44c177d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/models/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductHolidayDiscountRepository.java" afterDir="false" />
+    <list default="true" id="f3b887f6-f5b7-4753-b61b-49ea30ff7147" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/CategoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/models/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/responses/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/responses/ProductResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/resources/dev/db/migration/V6__add_sample_comments_with_rating.sql" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/resources/dev/db/migration/V6__add_sample_comments_with_rating.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs/application.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,32 +24,35 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;LaiVanTuyen&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "LaiVanTuyen"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/LaiVanTuyen/ShopApp&quot;,
-    &quot;accountId&quot;: &quot;b677dacb-b995-460b-98dc-197dc80e7660&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/LaiVanTuyen/ShopApp",
+    "accountId": "b677dacb-b995-460b-98dc-197dc80e7660"
   }
-}</component>
-  <component name="PackageJsonUpdateNotifier">
-    <dismissed value="$PROJECT_DIR$/shopapp-angular/package.json" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="2zwReLzfYgYZrTi42FbYxorPv7x" />
+}]]></component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="33XJCA0MOTnDbyfs60PPyeyXsGj" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.shopapp [clean].executor": "Run",
+    "Maven.shopapp [validate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -69,27 +61,21 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ShopappApplication.executor": "Run",
     "git-widget-placeholder": "#2 on 010-Angular-17",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/tuyen.laivan",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
-    ]
   }
 }]]></component>
-  <component name="ReactorSettings">
-    <option name="notificationShown" value="true" />
-  </component>
   <component name="RunManager">
     <configuration name="ShopappApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="shopapp" />
@@ -109,15 +95,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="43bb21fe-c879-4ac2-bd79-7ecfb44c177d" name="Changes" comment="" />
-      <created>1752640248134</created>
+      <changelist id="f3b887f6-f5b7-4753-b61b-49ea30ff7147" name="Changes" comment="" />
+      <created>1759457355850</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1752640248134</updated>
-      <workItem from="1752640250533" duration="7601000" />
-      <workItem from="1753251601005" duration="180000" />
-      <workItem from="1753251831738" duration="37000" />
-      <workItem from="1759378869042" duration="18804000" />
+      <updated>1759457355850</updated>
+      <workItem from="1759457358772" duration="19361000" />
     </task>
     <servers />
   </component>
