@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="0@localhost" uuid="d371225f-3b6c-441b-bbc7-69fbc33888ef">
+    <data-source source="LOCAL" name="0@localhost" uuid="f881eb44-ee41-4646-a1a2-33cd3d4328b8">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/shopapp-backend/src/main/resources/application.yml</remarks>
       <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
       <jdbc-url>jdbc:redis://localhost:6379/0</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="ShopApp@localhost" uuid="c92db9ff-8de7-490a-b9f3-f56b9bd3cad3">
+    <data-source source="LOCAL" name="ShopApp@localhost" uuid="1ce85050-a33d-4335-b647-f4d8330e44a2">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>

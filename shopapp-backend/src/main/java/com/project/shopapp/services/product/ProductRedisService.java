@@ -30,17 +30,21 @@ public class ProductRedisService implements IProductRedisService {
      */
     private String getKeyFrom(String keyword,
                               Long categoryId,
-                              PageRequest pageRequest) {
+                              PageRequest pageRequest,
+                              Float priceMin,
+                              Float priceMax) {
         int pageNumber = pageRequest.getPageNumber();
         int pageSize = pageRequest.getPageSize();
         // Lấy thông tin sort đầu tiên (nếu có), nếu không thì mặc định là id ASC
         Sort.Order order = pageRequest.getSort().stream().findFirst().orElse(Sort.Order.asc("id"));
         String sortProperty = order.getProperty();
         String sortDirection = order.getDirection().name();
-        return String.format("all_products:%s:%s:%d:%d:%s:%s",
+        return String.format("all_products:%s:%s:%d:%d:%s:%s:%s:%s",
                 keyword != null ? keyword : "",
                 categoryId != null ? categoryId : "",
-                pageNumber, pageSize, sortProperty, sortDirection);
+                pageNumber, pageSize, sortProperty, sortDirection,
+                priceMin != null ? priceMin : "",
+                priceMax != null ? priceMax : "");
     }
 
     /**
@@ -91,9 +95,11 @@ public class ProductRedisService implements IProductRedisService {
     @Override
     public List<ProductResponse> getAllProducts(String keyword,
                                                 Long categoryId,
-                                                PageRequest pageRequest) throws JsonProcessingException {
+                                                PageRequest pageRequest,
+                                                Float priceMin,
+                                                Float priceMax) throws JsonProcessingException {
 
-        String key = this.getKeyFrom(keyword, categoryId, pageRequest);
+        String key = this.getKeyFrom(keyword, categoryId, pageRequest, priceMin, priceMax);
         String json = redisTemplate.opsForValue().get(key);
         // Nếu json không null, chuyển đổi json thành danh sách ProductResponse, ngược lại trả về null
         return json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : null;
@@ -104,8 +110,8 @@ public class ProductRedisService implements IProductRedisService {
      * Nếu không có dữ liệu cache thì trả về 0.
      */
     @Override
-    public Long countAllProducts(String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
-        String key = this.getKeyFrom(keyword, categoryId, pageRequest);
+    public Long countAllProducts(String keyword, Long categoryId, PageRequest pageRequest, Float priceMin, Float priceMax) throws JsonProcessingException {
+        String key = this.getKeyFrom(keyword, categoryId, pageRequest, priceMin, priceMax);
         String json = redisTemplate.opsForValue().get(key);
         List<ProductResponse> productResponses = json != null ? redisObjectMapper.readValue(json, new TypeReference<List<ProductResponse>>() {}) : null;
         return productResponses != null ? (long) productResponses.size() : 0L;
@@ -116,8 +122,8 @@ public class ProductRedisService implements IProductRedisService {
      * Lưu danh sách sản phẩm vào cache Redis với key truy vấn tương ứng.
      */
     @Override
-    public void saveAllProductsToCache(List<ProductResponse> productResponses, String keyword, Long categoryId, PageRequest pageRequest) throws JsonProcessingException {
-        String key = this.getKeyFrom(keyword, categoryId, pageRequest);
+    public void saveAllProductsToCache(List<ProductResponse> productResponses, String keyword, Long categoryId, PageRequest pageRequest, Float priceMin, Float priceMax) throws JsonProcessingException {
+        String key = this.getKeyFrom(keyword, categoryId, pageRequest, priceMin, priceMax);
         String json = redisObjectMapper.writeValueAsString(productResponses);
         redisTemplate.opsForValue().set(key, json);
     }

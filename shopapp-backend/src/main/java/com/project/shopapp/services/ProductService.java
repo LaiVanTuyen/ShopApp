@@ -101,9 +101,9 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductResponse> getAllProducts(String keyword,
-                                                Long categoryId, PageRequest pageRequest) {
-        // Lấy danh sách sản phẩm theo trang (page), giới hạn (limit), và categoryId (nếu có)
-        Page<Product> productsPage = productRepository.searchProducts(categoryId, keyword, pageRequest);
+                                                Long categoryId, PageRequest pageRequest, Float minPrice, Float maxPrice) {
+        // Lấy danh sách sản phẩm theo trang (page), giới hạn (limit), và categoryId (nếu có) và khoảng giá (nếu có)
+        Page<Product> productsPage = productRepository.searchProducts(categoryId, keyword, pageRequest, minPrice, maxPrice);
         Date currentDate = Date.valueOf(LocalDate.now());
         List<ProductResponse> responses = productsPage.getContent().stream().map(product -> {
             ProductResponse resp = ProductResponse.fromProduct(product);

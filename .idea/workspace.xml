@@ -4,9 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3b887f6-f5b7-4753-b61b-49ea30ff7147" name="Changes" comment="Add category detail retrieval and enhance product sorting functionality">
+    <list default="true" id="997b63ae-5eae-4d83-8915-a7a1b7721a25" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/data_source_mapping.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/controllers/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/repositories/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/IProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/IProductRedisService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/shopapp-backend/src/main/java/com/project/shopapp/services/product/ProductRedisService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logs/application.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,35 +27,33 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "LaiVanTuyen"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LaiVanTuyen&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/LaiVanTuyen/ShopApp",
-    "accountId": "b677dacb-b995-460b-98dc-197dc80e7660"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/LaiVanTuyen/ShopApp&quot;,
+    &quot;accountId&quot;: &quot;b677dacb-b995-460b-98dc-197dc80e7660&quot;
   }
-}]]></component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 5
-}]]></component>
-  <component name="ProjectId" id="33XJCA0MOTnDbyfs60PPyeyXsGj" />
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="3406X6waSV21nsM7o0GSlwaq2Hg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Maven.shopapp [clean].executor": "Run",
-    "Maven.shopapp [validate].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -53,6 +62,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ShopappApplication.executor": "Run",
     "git-widget-placeholder": "#2 on 010-Angular-17",
     "kotlin-language-version-configured": "true",
@@ -62,9 +72,8 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
+    "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -87,29 +96,17 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f3b887f6-f5b7-4753-b61b-49ea30ff7147" name="Changes" comment="" />
-      <created>1759457355850</created>
+      <changelist id="997b63ae-5eae-4d83-8915-a7a1b7721a25" name="Changes" comment="" />
+      <created>1760338182586</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1759457355850</updated>
-      <workItem from="1759457358772" duration="20205000" />
+      <updated>1760338182586</updated>
+      <workItem from="1760338184188" duration="6067000" />
+      <workItem from="1760411171490" duration="626000" />
     </task>
-    <task id="LOCAL-00001" summary="Add category detail retrieval and enhance product sorting functionality">
-      <option name="closed" value="true" />
-      <created>1759487629981</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1759487629981</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add category detail retrieval and enhance product sorting functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add category detail retrieval and enhance product sorting functionality" />
   </component>
 </project>

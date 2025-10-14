@@ -13,19 +13,26 @@ public interface IProductRedisService {
     List<ProductResponse> getAllProducts(
             String keyword,
             Long categoryId,
-            PageRequest pageRequest
+            PageRequest pageRequest,
+            Float priceMin,
+            Float priceMax
     ) throws JsonProcessingException;
 
     Long countAllProducts(
             String keyword,
             Long categoryId,
-            PageRequest pageRequest) throws JsonProcessingException ;
+            PageRequest pageRequest,
+            Float priceMin,
+            Float priceMax
+    ) throws JsonProcessingException ;
 
     void saveAllProductsToCache(
             List<ProductResponse> productResponses,
             String keyword,
             Long categoryId,
-            PageRequest pageRequest
+            PageRequest pageRequest,
+            Float priceMin,
+            Float priceMax
     ) throws JsonProcessingException;
 
     List<ProductResponse> getFeaturedProducts(

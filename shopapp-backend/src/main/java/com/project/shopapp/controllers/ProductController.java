@@ -175,7 +175,7 @@ public class ProductController {
     }
 
     /**
-     * API lấy danh sách sản phẩm (có phân trang, tìm kiếm, lọc theo category, cache redis)
+     * API lấy danh sách sản phẩm (có phân trang, tìm kiếm, lọc theo category, cache redis, sắp xếp)
      */
     @GetMapping("")
     public ResponseEntity<ProductListResponse> getProducts(
@@ -184,7 +184,9 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(required = false, name = "sort_by") String sortBy,
-            @RequestParam(required = false, name = "sort_dir", defaultValue = "asc") String sortDir
+            @RequestParam(required = false, name = "sort_dir", defaultValue = "asc") String sortDir,
+            @RequestParam(required = false, name = "min_price") Float priceMin,
+            @RequestParam(required = false, name = "max_price") Float priceMax
     ) throws JsonProcessingException {
         int totalPages = 0;
         // Xác định trường sort và chiều sort
@@ -194,17 +196,17 @@ public class ProductController {
                 page, limit,
                 sort
         );
-        logger.info("keyword = {}, category_id = {}, page = {}, limit = {}, sort_by = {}, sort_dir = {}", keyword, categoryId, page, limit, sortBy, sortDir);
+        logger.info("keyword = {}, category_id = {}, page = {}, limit = {}, sort_by = {}, sort_dir = {}, min_price = {}, max_price = {}", keyword, categoryId, page, limit, sortBy, sortDir, priceMin, priceMax);
 
         // Lấy dữ liệu từ cache redis trước
         List<ProductResponse> productResponses = productRedisService
-                .getAllProducts(keyword, categoryId, pageRequest);
+                .getAllProducts(keyword, categoryId, pageRequest, priceMin, priceMax);
         if (productResponses != null && !productResponses.isEmpty()) {
             totalPages = productResponses.get(0).getTotalPages();
         }
         // Nếu cache miss thì lấy từ DB và lưu lại cache
         if (productResponses == null || productResponses.isEmpty()) {
-            Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest);
+            Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest, priceMin, priceMax);
             totalPages = productPage.getTotalPages();
             productResponses = productPage.getContent();
             // Bổ sung totalPages vào các đối tượng ProductResponse
@@ -215,7 +217,9 @@ public class ProductController {
                     productResponses,
                     keyword,
                     categoryId,
-                    pageRequest);
+                    pageRequest,
+                    priceMin,
+                    priceMax);
         }
         return ResponseEntity.ok(ProductListResponse
                 .builder()

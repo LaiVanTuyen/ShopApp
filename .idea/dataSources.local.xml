@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-252.26199.169">
-    <data-source name="0@localhost" uuid="d371225f-3b6c-441b-bbc7-69fbc33888ef">
-      <database-info product="Redis Standalone" version="7.2.3" jdbc-version="4.2" driver-name="Redis JDBC Driver" driver-version="1.5" dbms="REDIS" exact-version="7.2.3" exact-driver-version="1.5">
-        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
-      </database-info>
+    <data-source name="0@localhost" uuid="f881eb44-ee41-4646-a1a2-33cd3d4328b8">
+      <database-info product="Redis Standalone" version="7.2.3" jdbc-version="4.2" driver-name="Redis JDBC Driver" driver-version="1.5" dbms="REDIS" exact-version="7.2.3" exact-driver-version="1.5" />
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
       <schema-mapping>
         <introspection-scope>
@@ -12,11 +10,10 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
-    <data-source name="ShopApp@localhost" uuid="c92db9ff-8de7-490a-b9f3-f56b9bd3cad3">
+    <data-source name="ShopApp@localhost" uuid="1ce85050-a33d-4335-b647-f4d8330e44a2">
       <database-info product="MySQL" version="8.2.0" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MYSQL" exact-version="8.2.0" exact-driver-version="8.2">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
-        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
       </database-info>
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <user-name>root</user-name>
