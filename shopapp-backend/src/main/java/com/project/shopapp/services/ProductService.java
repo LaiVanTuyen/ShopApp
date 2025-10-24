@@ -7,6 +7,7 @@ import com.project.shopapp.exceptions.InvalidParamException;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.models.Product;
 import com.project.shopapp.models.ProductImage;
+import com.project.shopapp.models.Availability;
 import com.project.shopapp.repositories.CategoryRepository;
 import com.project.shopapp.repositories.ProductImageRepository;
 import com.project.shopapp.repositories.ProductRepository;
@@ -27,6 +28,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import com.project.shopapp.services.CommonService;
 
 
 @Slf4j
@@ -37,6 +39,7 @@ public class ProductService implements IProductService {
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductHolidayDiscountRepository productHolidayDiscountRepository;
+    private final CommonService commonService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -50,12 +53,16 @@ public class ProductService implements IProductService {
                         new DataNotFoundException(
                                 "Cannot find category with id: " + productDTO.getCategoryId()));
 
+        // Parse availability from DTO (optional) using CommonService helper
+        Availability availability = commonService.parseAvailability(productDTO.getAvailability());
+
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
                 .thumbnail(productDTO.getThumbnail())
                 .description(productDTO.getDescription())
                 .category(existingCategory)
+                .availability(availability)
                 .build();
         return productRepository.save(newProduct);
     }
@@ -134,6 +141,12 @@ public class ProductService implements IProductService {
             existingProduct.setPrice(productDTO.getPrice());
             existingProduct.setDescription(productDTO.getDescription());
             existingProduct.setThumbnail(productDTO.getThumbnail());
+
+            // Cập nhật availability nếu được cung cấp trong DTO
+            if (productDTO.getAvailability() != null && !productDTO.getAvailability().isBlank()) {
+                existingProduct.setAvailability(commonService.parseAvailability(productDTO.getAvailability()));
+            }
+
             return productRepository.save(existingProduct);
         }
         return null;

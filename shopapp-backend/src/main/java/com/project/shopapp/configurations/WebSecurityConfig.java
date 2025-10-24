@@ -74,6 +74,9 @@ public class WebSecurityConfig {
                             .requestMatchers(GET,
                                     String.format("%s/order_details/**", apiPrefix)).permitAll()
 
+                            .requestMatchers(GET,
+                                    String.format("%s/comments/**", apiPrefix)).permitAll()
+
                             .anyRequest()
                             .authenticated();
                     //.anyRequest().permitAll();

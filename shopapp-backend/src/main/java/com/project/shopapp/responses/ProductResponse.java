@@ -35,6 +35,9 @@ public class ProductResponse extends BaseResponse{
     private Float salePercent;
     private Double actualSalePercent;
 
+    // Trạng thái availability
+    private String availability;
+
     public static ProductResponse fromProduct(Product product) {
         ProductResponse productResponse = ProductResponse.builder()
                 .id(product.getId())
@@ -46,6 +49,7 @@ public class ProductResponse extends BaseResponse{
                 .productImages(product.getProductImages())
                 .isFeatured(product.getIsFeatured())
                 .salePercent(product.getSalePercent())
+                .availability(product.getAvailability() != null ? product.getAvailability().name() : null)
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());

@@ -3,8 +3,6 @@ package com.project.shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,5 +45,10 @@ public class Product extends BaseEntity{
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    // Thêm trường availability - lưu dưới dạng chuỗi để tương thích với enum Availability
+    @Enumerated(EnumType.STRING)
+    @Column(name = "availability", nullable = false)
+    private Availability availability = Availability.IN_STOCK;
 
 }
